@@ -2,9 +2,11 @@ package com.example.exception.business;
 
 import com.example.exception.exception.BaseException;
 import com.example.exception.model.MRegisterRequest;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+@Service
 public class TestBusiness {
 
 
