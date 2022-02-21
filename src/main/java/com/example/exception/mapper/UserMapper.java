@@ -10,6 +10,7 @@ public interface UserMapper {
 
 //    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+
 //    @Mapping(source = "email", target = "email")
 //    @Mapping(source = "name", target = "name")
     MRegisterResponse userDtoToMRegisterResponse(User user);
