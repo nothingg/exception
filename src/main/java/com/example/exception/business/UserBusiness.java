@@ -3,7 +3,9 @@ package com.example.exception.business;
 import com.example.exception.entity.User;
 import com.example.exception.exception.BaseException;
 import com.example.exception.exception.FileException;
+import com.example.exception.mapper.UserMapper;
 import com.example.exception.model.MRegisterRequest;
+import com.example.exception.model.MRegisterResponse;
 import com.example.exception.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,15 +19,18 @@ public class UserBusiness {
 
     private final UserService userService;
 
-    public UserBusiness(UserService userService) {
+    private final UserMapper userMapper;
+
+    public UserBusiness(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
-    public User register(MRegisterRequest request) throws BaseException {
+    public MRegisterResponse register(MRegisterRequest request) throws BaseException {
 
         User user = userService.create(request.getEmail(), request.getPassword(), request.getName());
 
-        return user;
+        return userMapper.userDtoToMRegisterResponse(user);
 
     }
 
