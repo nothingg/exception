@@ -3,6 +3,7 @@ package com.example.exception.api;
 import com.example.exception.business.UserBusiness;
 import com.example.exception.entity.User;
 import com.example.exception.exception.BaseException;
+import com.example.exception.model.MLoginRequest;
 import com.example.exception.model.MRegisterRequest;
 import com.example.exception.model.MRegisterResponse;
 import com.example.exception.model.TestResponse;
@@ -29,8 +30,16 @@ public class UserApi {
         return response;
     }
 
-    @PostMapping
-    @RequestMapping("/register")
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody MLoginRequest request) throws BaseException {
+
+        String response = business.login(request);
+        return ResponseEntity.ok(response);
+
+    }
+
+
+    @PostMapping("/register")
     public ResponseEntity<MRegisterResponse> register(@RequestBody MRegisterRequest request) throws BaseException {
         MRegisterResponse response = business.register(request);
 

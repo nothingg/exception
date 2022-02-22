@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -22,6 +23,32 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public User update(User user){
+        return userRepository.save(user);
+    }
+
+    public User updateName(String id , String name) throws BaseException {
+        Optional<User> byId = userRepository.findById(id);
+        if(!byId.isPresent()){
+            throw UserException.notFound();
+        }
+        User user = byId.get();
+        user.setName(name);
+
+        return userRepository.save(user);
+    }
+
+    public void deleteById(String id){
+        userRepository.deleteById(id);
+    }
+
+    public boolean matchPassword(String rawPassword, String encodedPassword){
+        return passwordEncoder.matches(rawPassword,encodedPassword);
+    }
+
+    public Optional<User> findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
     public User create(String email , String password , String name) throws BaseException {
         //todo : สามารถใช้ Request Body ในการเช็คได้
         //validate

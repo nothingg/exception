@@ -3,7 +3,9 @@ package com.example.exception.business;
 import com.example.exception.entity.User;
 import com.example.exception.exception.BaseException;
 import com.example.exception.exception.FileException;
+import com.example.exception.exception.UserException;
 import com.example.exception.mapper.UserMapper;
+import com.example.exception.model.MLoginRequest;
 import com.example.exception.model.MRegisterRequest;
 import com.example.exception.model.MRegisterResponse;
 import com.example.exception.service.UserService;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserBusiness {
@@ -24,6 +27,26 @@ public class UserBusiness {
     public UserBusiness(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
+    }
+
+
+
+    public String login(MLoginRequest request) throws BaseException {
+        //todo validate request
+
+        //todo validate database
+        Optional<User> opt = userService.findByEmail(request.getEmail());
+        if(opt.isPresent()){
+            throw UserException.loginFailEmailNotFound();
+        }
+        User user = opt.get();
+        if(!userService.matchPassword(request.getPassword() , user.getPassword())){
+            throw UserException.loginFailPasswordIncorrect();
+        }
+
+        //Todo: generate JWT
+        String token = "JWT To Do";
+        return token;
     }
 
     public MRegisterResponse register(MRegisterRequest request) throws BaseException {

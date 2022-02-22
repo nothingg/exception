@@ -27,5 +27,12 @@ public class UserException extends BaseException {
         return new UserException("crate.Name.null");
     }
 
+    // Login //
+    public static UserException loginFailEmailNotFound() { return new UserException("login.fail");   }
+
+    public static UserException loginFailPasswordIncorrect() { return new UserException("login.fail");   }
+
     public static UserException createEmailDuplicate() { return new UserException("crate.email.duplicate");   }
+
+    public static UserException notFound() { return new UserException("user.not.found");    }
 }

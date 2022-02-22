@@ -19,6 +19,4 @@ public class FileException extends BaseException {
         return new FileException("unsuppported.file.type");
     }
 
-
-
 }
