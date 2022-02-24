@@ -1,7 +1,10 @@
 package com.example.exception;
 
+import com.example.exception.entity.Social;
 import com.example.exception.entity.User;
 import com.example.exception.exception.BaseException;
+import com.example.exception.exception.UserException;
+import com.example.exception.service.SocialService;
 import com.example.exception.service.UserService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,9 @@ class TestUserService {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private SocialService socialService;
 
 	@Order(1)
 	@Test
@@ -37,6 +43,7 @@ class TestUserService {
 		Assertions.assertTrue(isMatched);
 	}
 
+
 	@Order(2)
 	@Test
 	void testUpdate() throws BaseException {
@@ -54,6 +61,29 @@ class TestUserService {
 
 	@Order(3)
 	@Test
+	void testSocialCreate() throws UserException {
+		Optional<User> opt = userService.findByEmail(TestCreateData.email);
+		Assertions.assertTrue(opt.isPresent());
+
+		User user = opt.get();
+		Social social = user.getSocial();
+		Assertions.assertNull(social);
+
+		social = socialService.createSocial(
+				user,
+				TestSocialData.facebook,
+				TestSocialData.line,
+				TestSocialData.instagram,
+				TestSocialData.tiktok
+		);
+
+		Assertions.assertNotNull(social);
+		Assertions.assertEquals(TestSocialData.facebook, social.getFacebook());
+
+	}
+
+	@Order(9)
+	@Test
 	void testDelete() {
 		Optional<User> opt = userService.findByEmail(TestCreateData.email);
 		Assertions.assertTrue(opt.isPresent());
@@ -65,6 +95,12 @@ class TestUserService {
 		Assertions.assertFalse(byEmail.isPresent());
 	}
 
+	interface TestSocialData{
+		String facebook = "facebook";
+		String line = "line";
+		String instagram = "instagram";
+		String tiktok = "tiktok";
+	}
 	interface TestCreateData {
 		String email = "na@test.com";
 		String password = "1234";
